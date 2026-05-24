@@ -32,7 +32,7 @@ def download_financial_data(output_path="data/corpus.txt"):
     # "ashraq/financial-news-articles" has ~16k financial news articles
     try:
         ds = load_dataset("ashraq/financial-news-articles", split="train")
-        text_column = "content"  # This dataset uses "content" for article text
+        text_column = "text"  # This dataset uses "content" for article text
         print(f"Loaded {len(ds):,} articles")
         print(f"Columns: {ds.column_names}")
         print(f"First entry: {ds[0]}")
