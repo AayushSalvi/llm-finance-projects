@@ -30,6 +30,7 @@ CONFIG = {
     "log_interval" : 100, # print training loss
     "grad_clip" : 1.0, # Gradient clipping - cap the gradient magnitude
     "save_interval": 1000,
+    "weight_decay" : 0.1,
     "device" : "cuda" if torch.cuda.is_available() else "cpu",
 
     # Paths 
