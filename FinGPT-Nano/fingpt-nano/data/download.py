@@ -51,7 +51,7 @@ def download_financial_data(output_path="data/corpus.txt"):
     texts = []
     skipped = 0
     for item in ds:
-        text = item.get("textlets ", "")
+        text = item.get(text_column, "")
         if text and len(text.strip()) > 100:  # At least ~20 words
             texts.append(text.strip())
         else:
