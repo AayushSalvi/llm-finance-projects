@@ -1,0 +1,7 @@
+data/*.bin
+data/corpus.txt
+checkpoints/
+logs/
+__pycache__/
+*.pyc
+.venv/
