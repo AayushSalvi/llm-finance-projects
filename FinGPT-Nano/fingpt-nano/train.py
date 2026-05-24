@@ -28,7 +28,7 @@ from model import FinGPTNano
 
 def get_batch(split):
   data_path = CONFIG["train_data"] if split == "train" else CONFIG["val_data"]
-  data = np.memmap(data_path, dtype=np.uint16, model= "r")
+  data = np.memmap(data_path, dtype=np.uint16, mode= "r")
 
   ix = torch.randint(len(data) - CONFIG["block_size"] - 1, (CONFIG["batch_size"],))
 
