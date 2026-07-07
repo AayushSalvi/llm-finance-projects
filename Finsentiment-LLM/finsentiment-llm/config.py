@@ -28,7 +28,7 @@ The rest stay frozen in 4-bit precision.
 import torch 
 
 MODEL_CONFIG = {
-   "model_name" : "mistral/Mistral-7B-Instruct-v0.3",
+   "model_name" : "mistralai/Mistral-7B-Instruct-v0.3",
    "max_seq_length" : 512
 }
 
