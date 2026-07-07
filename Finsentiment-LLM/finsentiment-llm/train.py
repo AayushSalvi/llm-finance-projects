@@ -24,8 +24,7 @@ Run: python train.py
 # TODO: Build training pipeline using SFTTrainer
 
 from datasets import load_from_disk
-from transformers import TrainingArguments
-from trl import SFTTrainer
+from trl import SFTTrainer, SFTConfig
 
 from config import TRAINING_CONFIG, MODEL_CONFIG, LORA_CONFIG
 from model import load_model
@@ -44,7 +43,7 @@ def train():
     print(f"Train: {len(dataset['train']):,} examples")
     print(f"Test:  {len(dataset['test']):,} examples")
 
-    training_args = TrainingArguments(
+    training_args = SFTConfig(
         output_dir=TRAINING_CONFIG["output_dir"],
         num_train_epochs=TRAINING_CONFIG["num_train_epochs"],
         per_device_train_batch_size=TRAINING_CONFIG["per_device_train_batch_size"],
@@ -59,11 +58,11 @@ def train():
         eval_strategy=TRAINING_CONFIG["eval_strategy"],
         save_strategy=TRAINING_CONFIG["save_strategy"],
         load_best_model_at_end=TRAINING_CONFIG["load_best_model_at_end"],
-        dataset_text_field="text",                      
-        packing=TRAINING_CONFIG["packing"],              
-        max_seq_length=MODEL_CONFIG["max_seq_length"],  
+        dataset_text_field="text",
+        packing=TRAINING_CONFIG["packing"],
+        max_seq_length=MODEL_CONFIG["max_seq_length"],
         report_to="none",
-        )
+    )
 
     trainer = SFTTrainer(
         model=model,
