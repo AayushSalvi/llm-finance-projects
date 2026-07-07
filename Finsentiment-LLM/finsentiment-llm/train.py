@@ -61,7 +61,7 @@ def train():
         dataset_text_field="text",
         packing=TRAINING_CONFIG["packing"],
         max_length=MODEL_CONFIG["max_seq_length"],
-        loss_type="ForCausalLMLoss",
+        loss_type="nll",
         report_to="none",
     )
 
