@@ -27,8 +27,11 @@ from datasets import load_from_disk
 from transformers import TrainingArguments
 from trl import SFTTrainer
 
-from config import TRAINING_CONFIG, MODEL_CONFIG
+from config import TRAINING_CONFIG, MODEL_CONFIG, LORA_CONFIG
 from model import load_model
+from log_experiment import log_experiment
+import time
+
 
 def train():
     """Fine Tunning the model on financial sentiment data"""
@@ -94,7 +97,9 @@ def train():
     print(f"  Max seq length: {MODEL_CONFIG['max_seq_length']}")
     print("=" * 60 + "\n")
 
+    start_time = time.time()
     trainer.train()
+    training_time = (time.time() - start_time) / 60
 
     adapter_path = f"{TRAINING_CONFIG['output_dir']}/final_adapter"
     trainer.save_model(adapter_path)
@@ -109,6 +114,17 @@ def train():
     print(f"    model = PeftModel.from_pretrained(model, '{adapter_path}')")
     print("=" * 60)
 
+    log_experiment(
+        config={**MODEL_CONFIG, **LORA_CONFIG, **TRAINING_CONFIG},
+        results={
+            "training_time_minutes": round(training_time, 1),
+        },
+        notes=""
+    )
 
-if __name__ == "__main__":
+    
+
+
+if __name__ == "__main__":    
     train() 
+    

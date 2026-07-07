@@ -29,6 +29,8 @@ from datasets import load_from_disk
 from sklearn.metrics import classification_report, confusion_matrix
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from peft import PeftModel 
+import json
+import os
 
 from config import MODEL_CONFIG, QUANT_CONFIG, TRAINING_CONFIG
 
@@ -233,6 +235,22 @@ def main():
    # Uncomment if you have enough GPU memory for both models:
    # base_model2, base_tok2 = load_base_model()
    # show_side_by_side(base_model2, base_tok2, ft_model, ft_tok, test_data)
+
+   import json
+   log_path = "logs/experiments.jsonl"
+   if os.path.exists(log_path):
+      with open(log_path, "r") as f:
+         lines = f.readlines()
+      if lines:
+         last = json.loads(lines[-1])
+         last["results"]["base_accuracy"] = round(base_accuracy, 4)
+         last["results"]["ft_accuracy"] = round(ft_accuracy, 4)
+         last["results"]["improvement"] = round((ft_accuracy - base_accuracy) * 100, 1)
+         lines[-1] = json.dumps(last) + "\n"
+         with open(log_path, "w") as f:
+               f.writelines(lines)
+         print("Updated experiment log with eval results.")
+   
 
 
 if __name__ == "__main__":
