@@ -61,6 +61,7 @@ TRAINING_CONFIG = {
    "weight_decay" : 0.01,
    "learning_ratio" : 0.03,
    "lr_scheduler_type" : "cosine",
+   "warmup_ratio": 0.03,
    "bf16" : True,
    "gradient_checkpointing": True,
    "loggig_steps" : 10,
