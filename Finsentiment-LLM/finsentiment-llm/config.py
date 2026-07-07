@@ -57,7 +57,7 @@ TRAINING_CONFIG = {
    "num_train_epochs":3,
    "per_device_train_batch_size" : 4,
    "gradient_accumulation_steps": 4,
-   "learning_rate" : "2e-4",
+   "learning_rate" : 2e-4,
    "weight_decay" : 0.01,
    "learning_ratio" : 0.03,
    "lr_scheduler_type" : "cosine",

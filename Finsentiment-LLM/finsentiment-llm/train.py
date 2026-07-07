@@ -63,14 +63,14 @@ def train():
     )
 
     trainer = SFTTrainer(
-        model = model,
-        train_dataset= dataset["train"],
-        eval_dataset= dataset["test"],
-        tokenizer = tokenizer,
-        args= training_args,
-        dataset_text_field = "text", 
-        max_seq_length = MODEL_CONFIG["max_seq_length"],
-        packing = TRAINING_CONFIG["packing"],
+        model=model,
+        train_dataset=dataset["train"],
+        eval_dataset=dataset["test"],
+        processing_class=tokenizer,     
+        args=training_args,
+        dataset_text_field="text",
+        max_seq_length=MODEL_CONFIG["max_seq_length"],
+        packing=TRAINING_CONFIG["packing"],
     )
 
     # ── Train! ──
