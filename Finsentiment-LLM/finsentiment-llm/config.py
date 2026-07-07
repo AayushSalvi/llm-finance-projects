@@ -68,7 +68,7 @@ TRAINING_CONFIG = {
    "eval_strategy" : "epoch",
    "save_strategy" : "epoch",
    "load_best_model_at_end" : True,
-   "packing" : True
+   "packing" : False
 }
 
 
