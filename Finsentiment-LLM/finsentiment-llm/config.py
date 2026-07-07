@@ -64,7 +64,7 @@ TRAINING_CONFIG = {
    "warmup_ratio": 0.03,
    "bf16" : True,
    "gradient_checkpointing": True,
-   "loggig_steps" : 10,
+   "logging_steps" : 10,
    "eval_strategy" : "epoch",
    "save_strategy" : "epoch",
    "load_best_model_at_end" : True,
