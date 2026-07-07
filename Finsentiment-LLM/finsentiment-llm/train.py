@@ -60,7 +60,7 @@ def train():
         load_best_model_at_end=TRAINING_CONFIG["load_best_model_at_end"],
         dataset_text_field="text",
         packing=TRAINING_CONFIG["packing"],
-        max_seq_length=MODEL_CONFIG["max_seq_length"],
+        max_length=MODEL_CONFIG["max_seq_length"],
         report_to="none",
     )
 
