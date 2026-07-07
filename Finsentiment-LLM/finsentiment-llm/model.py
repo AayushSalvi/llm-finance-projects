@@ -70,6 +70,7 @@ def load_model():
       task_type=LORA_CONFIG["task_type"],
    )
 
+   model = get_peft_model(model,lora_config)
    model.print_trainable_parameters()
 
    print(f"Model loaded on: {model.device}")
