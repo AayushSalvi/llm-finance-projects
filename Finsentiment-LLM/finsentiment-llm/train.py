@@ -59,18 +59,18 @@ def train():
         eval_strategy=TRAINING_CONFIG["eval_strategy"],
         save_strategy=TRAINING_CONFIG["save_strategy"],
         load_best_model_at_end=TRAINING_CONFIG["load_best_model_at_end"],
-        report_to="none",  # Set to "wandb" if you want W&B tracking
-    )
+        dataset_text_field="text",                      
+        packing=TRAINING_CONFIG["packing"],              
+        max_seq_length=MODEL_CONFIG["max_seq_length"],  
+        report_to="none",
+        )
 
     trainer = SFTTrainer(
         model=model,
         train_dataset=dataset["train"],
         eval_dataset=dataset["test"],
-        processing_class=tokenizer,     
+        processing_class=tokenizer,
         args=training_args,
-        dataset_text_field="text",
-        max_seq_length=MODEL_CONFIG["max_seq_length"],
-        packing=TRAINING_CONFIG["packing"],
     )
 
     # ── Train! ──
