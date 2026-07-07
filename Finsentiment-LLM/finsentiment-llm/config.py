@@ -71,4 +71,29 @@ if __name__ == "__main__":
    print("FinSentiment-LLM Config")
 
    print("\nModel")
-   for k,v in MODE
+   for k,v in MODEL_CONFIG.items():
+      print(f"  {k:25s}: {v}")
+
+   print("\nQuantization:")
+   for k, v in QUANT_CONFIG.items():
+      print(f"  {k:25s}: {v}")
+
+   print("\nLoRA:")
+   for k, v in LORA_CONFIG.items():
+      print(f"  {k:25s}: {v}")
+
+   print("\nTraining:")
+   for k, v in TRAINING_CONFIG.items():
+      print(f"  {k:25s}: {v}")
+
+   d = 4096 
+   r = LORA_CONFIG["r"]
+   n_layers = 32 # Mistral 7B has 32 layers 
+   n_modules = len(LORA_CONFIG["target_modules"])
+   params_per_module = d * r + r * d 
+   total_lora_params = n_layers * n_modules * params_per_module
+
+   print(f"\n  Estimated LoRA params:   {total_lora_params:,} ({total_lora_params/1e6:.1f}M)")
+   print(f"  Base model params:       ~7,200,000,000 (7.2B)")
+   print(f"  Trainable fraction:      {total_lora_params/7.2e9*100:.2f}%")
+   print(f"  Adapter save size:       ~{total_lora_params * 2 / 1e6:.0f} MB (BF16)")

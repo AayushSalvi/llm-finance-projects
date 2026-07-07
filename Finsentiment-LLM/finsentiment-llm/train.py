@@ -22,3 +22,93 @@ Run: python train.py
 """
 
 # TODO: Build training pipeline using SFTTrainer
+
+from datasets import load_from_disk
+from transformers import TrainingArguments
+from trl import SFTTrainer
+
+from config import TRAINING_CONFIG, MODEL_CONFIG
+from model import load_model
+
+def train():
+    """Fine Tunning the model on financial sentiment data"""
+    print("loading model...")
+
+    model, tokenizer = load_model()
+
+    print("Loading Dataset")
+    dataset = load_from_disk("data/financial_sentiment")
+    print(f"Train: {len(dataset['train']):,} examples")
+    print(f"Test:  {len(dataset['test']):,} examples")
+
+    training_args = TrainingArguments(
+        output_dir=TRAINING_CONFIG["output_dir"],
+        num_train_epochs=TRAINING_CONFIG["num_train_epochs"],
+        per_device_train_batch_size=TRAINING_CONFIG["per_device_train_batch_size"],
+        gradient_accumulation_steps=TRAINING_CONFIG["gradient_accumulation_steps"],
+        learning_rate=TRAINING_CONFIG["learning_rate"],
+        weight_decay=TRAINING_CONFIG["weight_decay"],
+        warmup_ratio=TRAINING_CONFIG["warmup_ratio"],
+        lr_scheduler_type=TRAINING_CONFIG["lr_scheduler_type"],
+        bf16=TRAINING_CONFIG["bf16"],
+        gradient_checkpointing=TRAINING_CONFIG["gradient_checkpointing"],
+        logging_steps=TRAINING_CONFIG["logging_steps"],
+        eval_strategy=TRAINING_CONFIG["eval_strategy"],
+        save_strategy=TRAINING_CONFIG["save_strategy"],
+        load_best_model_at_end=TRAINING_CONFIG["load_best_model_at_end"],
+        report_to="none",  # Set to "wandb" if you want W&B tracking
+    )
+
+    trainer = SFTTrainer(
+        model = model,
+        train_dataset= dataset["train"],
+        eval_dataset= dataset["test"],
+        tokenizer = tokenizer,
+        args= training_args,
+        dataset_text_field = "text", 
+        max_seq_length = MODEL_CONFIG["max_seq_length"],
+        packing = TRAINING_CONFIG["packing"],
+    )
+
+    # ── Train! ──
+    # Under the hood, this does exactly what Project 1 loop did:
+    #   for each batch:
+    #     logits, loss = model(input_ids, labels)
+    #     loss.backward()
+    #     clip_grad_norm_()
+    #     optimizer.step()
+    #     scheduler.step()
+    #
+    # But it also handles:
+    #   - Gradient accumulation (effective batch = 4 × 4 = 16)
+    #   - Mixed precision (BF16 forward, FP32 gradients)
+    #   - Gradient checkpointing (recompute activations to save memory)
+    #   - Evaluation at end of each epoch
+    #   - Saving best model based on eval loss
+
+    print("\n" + "=" * 60)
+    print("Starting training...")
+    print(f"  Epochs: {TRAINING_CONFIG['num_train_epochs']}")
+    print(f"  Batch size: {TRAINING_CONFIG['per_device_train_batch_size']} × {TRAINING_CONFIG['gradient_accumulation_steps']} = {TRAINING_CONFIG['per_device_train_batch_size'] * TRAINING_CONFIG['gradient_accumulation_steps']} effective")
+    print(f"  Learning rate: {TRAINING_CONFIG['learning_rate']}")
+    print(f"  Max seq length: {MODEL_CONFIG['max_seq_length']}")
+    print("=" * 60 + "\n")
+
+    trainer.train()
+
+    adapter_path = f"{TRAINING_CONFIG['output_dir']}/final_adapter"
+    trainer.save_model(adapter_path)
+    tokenizer.save_pretrained(adapter_path)
+
+    print(f"\n{'=' * 60}")
+    print("Training complete!")
+    print(f"  Adapter saved to: {adapter_path}")
+    print(f"  Adapter size: ~27 MB (vs 14 GB full model)")
+    print(f"  To load later:")
+    print(f"    model = AutoModelForCausalLM.from_pretrained('{MODEL_CONFIG['model_name']}')")
+    print(f"    model = PeftModel.from_pretrained(model, '{adapter_path}')")
+    print("=" * 60)
+
+
+if __name__ == "__main__":
+    train() 
