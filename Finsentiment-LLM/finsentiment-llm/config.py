@@ -43,6 +43,8 @@ LORA_CONFIG = {
    "r" : 16,
    "lora_alpha" : 32,
    "lora_dropout" : 0.05,
+   "bias" : None,
+   "task_type" : "CAUSAL_LM",
    "target_modules" : [
       "q_proj", "k_proj", "v_proj", "o_proj",  # Attention
       "gate_proj", "up_proj", "down_proj",       # FFN
@@ -55,6 +57,8 @@ TRAINING_CONFIG = {
    "num_train_epochs":3,
    "per_device_train_batch_size" : 4,
    "gradient_accumlation_steps": 4,
+   "learning_rate" : "2e-4",
+   "weight_decay" : 0.01,
    "learning_ratio" : 0.03,
    "lr_scheduler_type" : "cosine",
    "bf16" : True,
