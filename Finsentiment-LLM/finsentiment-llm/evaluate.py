@@ -90,7 +90,8 @@ def predict_sentiment(model, tokenizer, sentence):
    Feed the instruction prompt to the model, generate a short response, 
    and extract the sentiment label from the generated text.
    """
-
+   if not sentence or not isinstance(sentence, str):
+      return "neutral"
    prompt = {
       f"<s>[INST] Analyze the sentiment of the following financial text. "
         f"Classify as: positive, negative, or neutral.\n\n"
