@@ -92,13 +92,13 @@ def predict_sentiment(model, tokenizer, sentence):
    """
    if not sentence or not isinstance(sentence, str):
       return "neutral"
-   prompt = {
-      f"<s>[INST] Analyze the sentiment of the following financial text. "
-        f"Classify as: positive, negative, or neutral.\n\n"
-        f"Text: \"{sentence}\"\n"
-        f"[/INST]\n"
-        f"Sentiment:"
-   }
+   prompt = (
+   f"[INST] Analyze the sentiment of the following financial text. "
+   f"Classify as: positive, negative, or neutral.\n\n"
+   f"Text: \"{sentence}\"\n"
+   f"[/INST]\n"
+   f"Sentiment:"
+      )
 
    inputs = tokenizer(prompt, return_tensors = "pt").to(model.device)
 
