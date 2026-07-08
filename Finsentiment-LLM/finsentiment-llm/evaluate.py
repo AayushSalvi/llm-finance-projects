@@ -132,6 +132,9 @@ def evaluate_model(model, tokenizer,test_data,model_name="Model"):
 
    for i, example in enumerate(test_data):
       true_label = label_map[example["label"]]
+      sentence = example.get("sentence", example.get("text", ""))
+      if not sentence or not isinstance(sentence, str):
+        continue
       pred_label = predict_sentiment(model,tokenizer,example["sentence"])
 
       y_true.append(true_label)
