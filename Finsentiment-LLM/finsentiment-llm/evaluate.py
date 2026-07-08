@@ -106,8 +106,7 @@ def predict_sentiment(model, tokenizer, sentence):
       output = model.generate(
          **inputs,
          max_new_tokens = 10,
-         temperature = 0.1,
-         do_sample = True,
+         do_sample = False,
          pad_token_id = tokenizer.eos_token_id,
       )
 
