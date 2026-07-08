@@ -52,11 +52,11 @@ def prepare_data(output_dir="data"):
          label = item["label_text"]
 
          text = (
-               f"<s>[INST] Analyze the sentiment of the following financial text. "
-               f"Classify as: positive, negative, or neutral.\n\n"
-               f"Text: \"{sentence}\"\n"
-               f"[/INST]\n"
-               f"Sentiment: {label}</s>"
+         f"[INST] Analyze the sentiment of the following financial text. "
+         f"Classify as: positive, negative, or neutral.\n\n"
+         f"Text: \"{sentence}\"\n"
+         f"[/INST]\n"
+         f"Sentiment: {label}"
          )
 
          formatted.append({
