@@ -1,0 +1,7 @@
+sec_filings/
+sec_vectordb/
+*.bin
+__pycache__/
+*.pyc
+.venv/
+logs/

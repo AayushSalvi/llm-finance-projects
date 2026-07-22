@@ -1,0 +1,11 @@
+torch>=2.0
+transformers>=4.40
+sentence-transformers
+chromadb
+rank-bm25
+sec-edgar-downloader
+beautifulsoup4
+langchain
+langchain-text-splitters
+accelerate
+bitsandbytes
